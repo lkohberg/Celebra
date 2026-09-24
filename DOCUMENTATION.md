@@ -338,19 +338,19 @@ Opened from the email link. States: checking (spinner), invalid or expired link 
 
 ## 4.12 Unsubscribe (`/unsubscribe?token=...`)
 
-German only. States: loading, confirm ("Abmelden bestätigen" button), success, already unsubscribed, invalid link, error.
+German or English depending on the site language. States: loading, confirm, success, already unsubscribed, invalid link, error.
 
 ## 4.13 Live Invitation (`/:eventLink`, `/:eventLink/:lang`)
 
 The page guests see. Described in detail in 5.10 to 5.18.
 * While loading, and until the hero image has loaded, the page is intentionally empty (no spinner) so guests never see a half built page.
 * Unknown or non live link: "event not found" message and button to the homepage.
-* Every visit records a page view.
+* Every visit records a page view, or a QR scan when opened from a downloaded QR code.
 * The language part of the address (for example `/anna-und-max/en`) selects the guest language; without it German is used.
 
 ## 4.14 404 Page
 
-Any unknown address that is not an event shows "404 Oops! Page not found" with a link home. Only in English.
+Any unknown address that is not an event shows "404 Oops! Page not found" with a link home, in German or English depending on the site language.
 
 ---
 
@@ -467,7 +467,7 @@ The reply appears in the host's Guests tab and in the notification badge. The de
 ## 5.13 Map and Calendar (Implemented)
 
 * Google Maps map of the address (no API key needed).
-* Wedding designs (Classic, Floral, Modern): "Add to calendar" with Google Calendar and an .ics download for Apple and Outlook. Event length assumed 4 hours.
+* All premium designs (weddings, birthday, business): "Add to calendar" with Google Calendar and an .ics download for Apple and Outlook. Event length assumed 4 hours.
 
 ## 5.14 Background Music (Implemented)
 
@@ -497,18 +497,18 @@ Story, Timeline, Dress code (men/women), Menu, Hotels, Shuttle, Wishlist (with l
 
 11 guest languages: German, English, Spanish, Portuguese, French, Italian, Polish, Romanian, Dutch, Turkish, Chinese. The fixed labels on the invitation (for example "Countdown", "RSVP", "Location") are translated; the host's own texts stay as entered. Each language has its own address (`/link/en`) and QR code.
 
-## 5.18 Page View and QR Tracking (Partially implemented)
+## 5.18 Page View and QR Tracking (Implemented)
 
-Every visit stores a page view with referrer and browser info. The dashboard shows "Page views" and "QR scans"; the code only records page views, so the QR scan counter stays at zero unless scans are recorded elsewhere (Unable to verify).
+Every visit stores a page view with referrer and browser info. The dashboard shows "Page views" and "QR scans"; downloaded QR codes carry a marker, so scans are counted as QR scans. QR codes printed before this change still count as page views.
 
 ## 5.19 Dashboard Event Management (Implemented)
 
 * **Edit event:** window with all main fields and the block configurator; available for live, paid and draft events.
-* **Archive / Go live:** takes a live event offline or back online. Reactivating as a normal user may be blocked by the security rules (see section 13).
+* **Archive / Go live:** takes a live event offline or back online. Hosts can reactivate an archived event themselves if it was paid for and has not expired.
 * **Delete:** with confirmation; permanent.
 * **Excel exports:** guests (name, email, reply, companions, menu, message, date) as `guests-<link>.xlsx`; music wishes as `musikwuensche-<link>.xlsx`.
 * **QR download:** PNG, per language when several languages exist.
-* **Expiry warning:** from day 170 after creation a yellow banner with **Renew now** (€10 for 6 more months, Stripe opens in a new tab); after day 180 a red "expired" banner.
+* **Expiry warning:** from 10 days before the real expiry date a yellow banner with **Renew now** (€10 for 6 more months, Stripe opens in a new tab); after expiry a red "expired" banner.
 
 ## 5.20 Admin: Promo Codes (Implemented)
 
@@ -530,9 +530,9 @@ Refreshes every 30 seconds. For each open report: **Disable music**, **Delete mu
 
 Customers give 1 to 5 stars plus feedback (max 500 characters) and one suggestion (max 1000 characters). Both can be edited later. Admins see average rating, all reviews and all suggestions.
 
-## 5.24 Cookie Banner (UI only)
+## 5.24 Cookie Banner (Implemented)
 
-Accept and Decline both just hide the banner and remember the choice. The site only uses technically necessary storage, so nothing else changes.
+A single OK button hides the banner and remembers the choice. The text states that only technically necessary cookies are used.
 
 ## 5.25 Legal Windows (Implemented)
 
@@ -630,7 +630,7 @@ Guest taps "report" in the music section → admin sees the report on the dashbo
 | Envelope / gift / badge | Invitation | Starts intro, reveals page |
 | Music button | Invitation | Play / pause |
 | Report copyright | Invitation music section | Sends report, stops music |
-| Add to calendar | Wedding invitations | Google or .ics file |
+| Add to calendar | All premium invitations | Google or .ics file |
 | RSVP Send | Invitation | Saves reply |
 | Vote / Claim / Answer / Send song | Invitation blocks | Saves guest interaction |
 | Slideshow image | Invitation | Opens full screen view |
@@ -691,10 +691,10 @@ There are **no AI features** in the product.
 | Welcome email | Registration | Sent via email queue | Implemented |
 | Account emails | Signup, reset, email change | Branded emails from notify.celebra.at | Implemented |
 | Email queue | Every 5 seconds | Sends queued emails, retries up to 5 times, respects rate limits, respects unsubscribes | Implemented |
-| Renewal reminder email | Event about 150 days old | Email "Your event expires soon, renew for €10" | Partially implemented: no schedule found in the project, Unable to verify |
-| Renewal payment | Renew now | Stripe €10 payment | Partially implemented: payment does not extend the runtime in code |
-| Expiry banners | Opening dashboard | Calculated from creation date (day 170 / 180) | Implemented (display only) |
-| Automatic deactivation after 180 days | Legal terms | Not implemented in code | Not implemented |
+| Renewal reminder email | Daily check, 10 days before expiry | Email "Your event expires soon, renew for €10" | Implemented |
+| Renewal payment | Renew now | Stripe €10 payment adds 6 months; an archived event goes back online | Implemented |
+| Expiry banners | Opening dashboard | Calculated from the stored expiry date | Implemented |
+| Automatic deactivation after 180 days | Daily check at 9:00 Vienna time | Expired live events are taken offline | Implemented |
 | Notification badge | Every 60 seconds | Counts new replies and guest actions | Implemented |
 | Copyright panel refresh | Every 30 seconds | Loads new reports | Implemented |
 
