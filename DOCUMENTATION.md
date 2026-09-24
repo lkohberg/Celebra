@@ -338,14 +338,14 @@ Opened from the email link. States: checking (spinner), invalid or expired link 
 
 ## 4.12 Unsubscribe (`/unsubscribe?token=...`)
 
-German only. States: loading, confirm ("Abmelden bestätigen" button), success, already unsubscribed, invalid link, error.
+German or English depending on the site language. States: loading, confirm, success, already unsubscribed, invalid link, error.
 
 ## 4.13 Live Invitation (`/:eventLink`, `/:eventLink/:lang`)
 
 The page guests see. Described in detail in 5.10 to 5.18.
 * While loading, and until the hero image has loaded, the page is intentionally empty (no spinner) so guests never see a half built page.
 * Unknown or non live link: "event not found" message and button to the homepage.
-* Every visit records a page view.
+* Every visit records a page view, or a QR scan when opened from a downloaded QR code.
 * The language part of the address (for example `/anna-und-max/en`) selects the guest language; without it German is used.
 
 ## 4.14 404 Page
