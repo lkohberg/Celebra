@@ -20,11 +20,6 @@ const CookieConsent = () => {
     setVisible(false);
   };
 
-  const handleDecline = () => {
-    localStorage.setItem("cookie-consent", "declined");
-    setVisible(false);
-  };
-
   return (
     <AnimatePresence>
       {visible && (
@@ -40,11 +35,8 @@ const CookieConsent = () => {
               {t("cookie.message")}
             </p>
             <div className="flex gap-2 shrink-0">
-              <Button size="sm" variant="outline" onClick={handleDecline} className="font-body">
-                {t("cookie.decline")}
-              </Button>
               <Button size="sm" onClick={handleAccept} className="font-body">
-                {t("cookie.accept")}
+                OK
               </Button>
             </div>
           </div>

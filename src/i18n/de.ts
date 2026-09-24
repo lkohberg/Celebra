@@ -799,7 +799,7 @@ const de = {
   "auth.backToLogin": "Zurück zum Login",
 
   // Cookie consent
-  "cookie.message": "Wir verwenden Cookies, um dir die bestmögliche Nutzung unserer Website zu ermöglichen.",
+  "cookie.message": "Wir verwenden nur technisch notwendige Cookies, damit die Website funktioniert. Kein Tracking, keine Werbung.",
   "cookie.accept": "Akzeptieren",
   "cookie.decline": "Ablehnen",
   "cookie.learnMore": "Mehr erfahren",

@@ -774,7 +774,7 @@ const en = {
   "auth.backToLogin": "Back to login",
 
   // Cookie consent
-  "cookie.message": "We use cookies to provide you with the best possible experience on our website.",
+  "cookie.message": "We only use technically necessary cookies so the website works properly. No tracking, no advertising.",
   "cookie.accept": "Accept",
   "cookie.decline": "Decline",
   "cookie.learnMore": "Learn more",
