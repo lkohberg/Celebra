@@ -58,7 +58,7 @@ const LanguageLinks = ({ event }: { event: any }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div ref={(el) => { qrRefs.current[code] = el; }} className="inline-block bg-card p-2 rounded-lg">
-                  <QRCodeSVG value={url} size={80} bgColor="transparent" fgColor="hsl(220, 20%, 14%)" level="H" />
+                  <QRCodeSVG value={`${url}?src=qr`} size={80} bgColor="transparent" fgColor="hsl(220, 20%, 14%)" level="H" />
                 </div>
                 <Button variant="ghost" size="sm" className="h-7 font-body text-xs" onClick={() => handleDownloadQR(code, url)}>
                   <Download className="w-3 h-3 mr-1" /> QR

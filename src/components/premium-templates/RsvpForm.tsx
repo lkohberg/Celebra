@@ -12,11 +12,12 @@ interface RsvpFormProps {
   rsvpDeadline?: string | null;
   menuSelection?: boolean;
   variant?: "wedding" | "birthday" | "corporate";
+  accentColor?: string;
   lang?: EventLang;
   maxCompanions?: number;
 }
 
-const RsvpForm = ({ eventId, rsvpDeadline, menuSelection, variant = "wedding", lang, maxCompanions = 5 }: RsvpFormProps) => {
+const RsvpForm = ({ eventId, rsvpDeadline, menuSelection, variant = "wedding", lang, maxCompanions = 5, accentColor }: RsvpFormProps) => {
   const { t } = useTranslation();
   const labels = lang ? getEventLabels(lang) : null;
   const submitRsvp = useSubmitRsvp();
@@ -38,11 +39,11 @@ const RsvpForm = ({ eventId, rsvpDeadline, menuSelection, variant = "wedding", l
   const [message, setMessage] = useState("");
   const [menuChoice, setMenuChoice] = useState("");
 
-  const primaryColor = variant === "wedding"
+  const primaryColor = accentColor || (variant === "wedding"
     ? "hsl(150, 18%, 38%)"
     : variant === "birthday"
     ? "hsl(340, 65%, 50%)"
-    : "hsl(220, 50%, 35%)";
+    : "hsl(220, 50%, 35%)");
 
   const handleCompanionCountChange = (value: number) => {
     const clamped = Math.max(0, Math.min(value, maxCompanions));

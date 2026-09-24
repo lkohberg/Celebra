@@ -42,7 +42,28 @@ Deno.serve(async (req) => {
       const session = event.data.object as Stripe.Checkout.Session;
       const eventId = session.metadata?.event_id;
 
-      if (eventId) {
+      if (eventId && session.metadata?.type === "renewal") {
+        const { data: ev } = await supabase
+          .from("events")
+          .select("expires_at, created_at, status")
+          .eq("id", eventId)
+          .single();
+        const currentEnd = ev?.expires_at
+          ? new Date(ev.expires_at)
+          : new Date(new Date(ev?.created_at ?? Date.now()).getTime() + 180 * 86400000);
+        const base = currentEnd.getTime() > Date.now() ? currentEnd : new Date();
+        const newEnd = new Date(base.getTime() + 180 * 86400000);
+        const update: Record<string, unknown> = { expires_at: newEnd.toISOString() };
+        if (ev?.status === "archived") update.status = "live";
+        await supabase.from("events").update(update).eq("id", eventId);
+        await supabase.from("event_logs").insert({
+          event_id: eventId,
+          action: "renewal_completed",
+          details: { stripe_session_id: session.id, amount: session.amount_total, currency: session.currency, expires_at: newEnd.toISOString() },
+          actor_id: session.metadata?.user_id,
+        });
+        console.log(`Renewal completed for event ${eventId}, expires ${newEnd.toISOString()}`);
+      } else if (eventId) {
         // Check if event has manual blocks
         const { data: eventData } = await supabase
           .from("events")
@@ -62,6 +83,7 @@ Deno.serve(async (req) => {
           .update({
             status: newStatus,
             stripe_payment_id: session.payment_intent as string,
+            expires_at: new Date(Date.now() + 180 * 86400000).toISOString(),
           })
           .eq("id", eventId);
 

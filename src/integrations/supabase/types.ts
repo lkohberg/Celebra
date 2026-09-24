@@ -252,6 +252,7 @@ export type Database = {
           event_date: string
           event_link: string
           event_time: string
+          expires_at: string | null
           font: string | null
           hero_image_url: string | null
           hotel_recommendations: Json | null
@@ -292,6 +293,7 @@ export type Database = {
           event_date: string
           event_link: string
           event_time: string
+          expires_at?: string | null
           font?: string | null
           hero_image_url?: string | null
           hotel_recommendations?: Json | null
@@ -332,6 +334,7 @@ export type Database = {
           event_date?: string
           event_link?: string
           event_time?: string
+          expires_at?: string | null
           font?: string | null
           hero_image_url?: string | null
           hotel_recommendations?: Json | null

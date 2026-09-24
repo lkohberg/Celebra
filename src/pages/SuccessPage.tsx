@@ -124,7 +124,7 @@ const SuccessPage = () => {
         {/* QR Code */}
         <div ref={qrRef} className="inline-block p-6 bg-card rounded-xl shadow-card mb-8">
           <QRCodeSVG
-            value={primaryUrl}
+            value={`${primaryUrl}?src=qr`}
             size={180}
             bgColor="transparent"
             fgColor="hsl(220, 20%, 14%)"
