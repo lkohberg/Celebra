@@ -578,7 +578,7 @@ Same as 6.1, but with Custom illustration. In step 1 the host uploads a referenc
 
 ## 6.5 Renewal
 
-From day 170 a yellow banner appears. **Renew now** opens Stripe for €10. (See section 13: the payment currently does not extend the runtime in the code.)
+10 days before expiry the host gets a reminder email and a yellow banner appears. **Renew now** opens Stripe for €10. After payment the runtime is extended by 6 months; an archived event goes back online automatically.
 
 ## 6.6 Password reset
 
@@ -645,7 +645,7 @@ Guest taps "report" in the music section → admin sees the report on the dashbo
 | Upload illustration / file | Admin fulfillment | Adds assets |
 | Disable / Delete music, Dismiss | Admin copyright panel | Resolves report |
 | New / Edit / Delete promo | Admin Tools | Manages codes |
-| Accept / Decline | Cookie banner | Hides banner |
+| OK | Cookie banner | Hides banner |
 
 ---
 
