@@ -81,7 +81,7 @@ Startseite -> Design wählen -> Blöcke/Pakete wählen -> Eventdaten eingeben
 -> Link / QR Code teilen -> Gäste antworten -> Gastgeber:in sieht Ergebnisse im Dashboard
 ```
 
-Enthält die Bestellung Blöcke, die das Team von celebra.at manuell erstellt (individuelle Illustration, Music Pro), geht die Einladung zuerst in **Prüfung** und wird nach Fertigstellung von einer Administratorin oder einem Administrator veröffentlicht.
+Enthält die Bestellung Blöcke, die das Team von celebra.at manuell erstellt (individuelle Illustration), geht die Einladung zuerst in **Prüfung** und wird nach Fertigstellung von einer Administratorin oder einem Administrator veröffentlicht.
 
 ---
 
@@ -391,7 +391,7 @@ Optionale Inhaltsabschnitte der Einladung. Kombinierbar mit einem Paket (nur Bl�
 
 ## 5.5 Blöcke mit manueller Arbeit (Umgesetzt)
 
-**Individuelle Illustration** (Hochzeit, €29) und **Music Pro** (Hochzeit, €19) werden vom Team von celebra.at erstellt oder geprüft.
+**Individuelle Illustration** (Hochzeit, €29) wird vom Team von celebra.at erstellt. Music Pro und Hintergrundmusik gehen sofort online.
 * Kund:innen laden ein Referenzfoto hoch und beschreiben den Wunsch (Illustration) oder hinterlassen Notizen.
 * Nach der Zahlung erhält das Event den Status **In Prüfung** statt live.
 * Die Erfolgsseite zeigt die Warte Version.
@@ -760,7 +760,7 @@ Einladungsseite: **€19** einmalig. Zusätzliche Sprache: je **€3**. Verläng
 |---|---|
 | Ablauf, Geschichte, Wunschliste, Dresscode, Hintergrundmusik, Videobotschaft | je €9 |
 | Hotels, Diashow, Menü, Shuttle | je €19 |
-| Music Pro (manuell) | €19 |
+| Music Pro | €19 |
 | Individuelle Illustration (manuell) | €29 |
 
 Pakete: **Starter €39** (Ablauf, Dresscode, Hotels, Shuttle, Musik), **Plus €49** (+ Menü, Videobotschaft), **Premium €79** (+ Diashow, Geschichte, Wunschliste; 10 Blöcke).
