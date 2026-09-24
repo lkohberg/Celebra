@@ -11,7 +11,7 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2025-01-27.acacia",
 });
 
-const MANUAL_BLOCK_SUFFIXES = ["-illustration", "-musicpro", "-bgmusic"];
+const MANUAL_BLOCK_SUFFIXES = ["-illustration"];
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {

@@ -81,7 +81,7 @@ Landing page -> Choose design -> Choose blocks/packages -> Enter event details
 -> Share link / QR code -> Guests reply -> Host reads results in dashboard
 ```
 
-If the order contains blocks that need manual work by the celebra.at team (custom illustration, Music Pro), the invitation first goes to **review** and an admin publishes it after finishing the work.
+If the order contains blocks that need manual work by the celebra.at team (custom illustration), the invitation first goes to **review** and an admin publishes it after finishing the work.
 
 ---
 
@@ -391,7 +391,7 @@ Optional content sections added to the invitation. Can be combined with a packag
 
 ## 5.5 Manual Work Blocks (Implemented)
 
-**Custom illustration** (wedding, €29) and **Music Pro** (wedding, €19) are created or checked by the celebra.at team.
+**Custom illustration** (wedding, €29) is created by the celebra.at team. Music Pro and background music go live immediately.
 * Customer uploads a reference photo and describes the wish (illustration) or leaves notes.
 * After payment the event goes to status **In review** instead of live.
 * The success page shows the pending version.
@@ -759,7 +759,7 @@ Invitation page: **€19** one time. Extra language: **€3** each. Renewal: **�
 |---|---|
 | Timeline, Story, Wishlist, Dress code, Background music, Video message | €9 each |
 | Hotels, Slideshow, Menu, Shuttle | €19 each |
-| Music Pro (manual) | €19 |
+| Music Pro | €19 |
 | Custom illustration (manual) | €29 |
 
 Packages: **Starter €39** (timeline, dress code, hotels, shuttle, music), **Plus €49** (+ menu, video message), **Premium €79** (+ slideshow, story, wishlist; 10 blocks).
