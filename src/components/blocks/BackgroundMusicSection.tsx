@@ -104,7 +104,7 @@ const BackgroundMusicSection = ({ accentColor, lang, isDemo = false, musicUrl, b
   return (
     <section className="py-5 md:py-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-card/50 via-card to-card/50" />
-      <div className="relative max-w-md mx-auto px-4 text-center space-y-1.5">
+      <div className="relative max-w-md mx-auto px-4 flex flex-col items-center gap-2">
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
