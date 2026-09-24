@@ -284,7 +284,7 @@ const PremiumWeddingPage = ({ event, theme, lang, showIntro = true, isDemo = fal
           {hasBlock("-musicpro") && <MusicProSection accentColor={accent} eventId={event.id} lang={lang} isPreview={isDemo} />}
 
           {event.rsvp_enabled && (
-            <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} />
+            <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} accentColor={accent} />
           )}
 
           {/* Section divider before footer */}

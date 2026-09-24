@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, MapPin, Clock, Calendar, Shirt, Sparkles } from "lucide-react";
 import { useTranslation } from "@/i18n";
+import { CalendarPlus } from "lucide-react";
+import { buildGoogleCalUrl, buildIcsBlob } from "./calendarUtils";
 import BadgeScanIntro from "./BadgeScanIntro";
 import CountdownTimer from "./CountdownTimer";
 import RsvpForm from "./RsvpForm";
@@ -175,7 +177,7 @@ const PremiumCorporatePage = ({ event, theme, lang, showIntro = true, isDemo = f
       {hasBlock("-sponsors") && <SponsorsSection sponsors={blockCfg.sponsors} accentColor={accent} lang={lang} />}
 
       {event.rsvp_enabled && (
-        <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="corporate" lang={lang} maxCompanions={maxCompanions} />
+        <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="corporate" lang={lang} maxCompanions={maxCompanions} accentColor={accent} />
       )}
 
       {/* Footer */}
@@ -185,6 +187,10 @@ const PremiumCorporatePage = ({ event, theme, lang, showIntro = true, isDemo = f
           <h2 className="font-display text-xl md:text-2xl text-foreground mb-1.5">{event.title}</h2>
           <CorpDivider color={accent} />
           <p className="font-body text-xs md:text-sm text-muted-foreground mt-2">{formattedDate}</p>
+              <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                <a href={buildGoogleCalUrl(event.title, event.event_date, event.event_time, event.address || event.location_name || "")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-body border border-border/50 text-foreground"><CalendarPlus className="w-4 h-4" style={{ color: accent }} /> Google Calendar</a>
+                <a href={buildIcsBlob(event.title, event.event_date, event.event_time, event.address || event.location_name || "")} download={`${event.title.replace(/\s/g, "_")}.ics`} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-body border border-border/50 text-foreground"><CalendarPlus className="w-4 h-4" style={{ color: accent }} /> Apple / Outlook</a>
+              </div>
         </div>
       </footer>
       </motion.div>

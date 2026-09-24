@@ -246,7 +246,7 @@ const WeddingFloralPage = ({ event, theme, lang, showIntro = true, isDemo = fals
           {hasBlock("-wishlist") && <WishlistSection items={blockCfg.wishlist} accentColor={accent} lang={lang} />}
           {hasBlock("-musicpro") && <MusicProSection accentColor={accent} eventId={event.id} lang={lang} isPreview={isDemo} />}
 
-          {event.rsvp_enabled && <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} />}
+          {event.rsvp_enabled && <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} accentColor={accent} />}
 
           <FloralWave from={bgWarm} to={bgLight} accent={accent} />
 

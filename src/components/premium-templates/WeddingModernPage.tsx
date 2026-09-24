@@ -241,7 +241,7 @@ const WeddingModernPage = ({ event, theme, lang, showIntro = true, isDemo = fals
           {hasBlock("-wishlist") && <WishlistSection items={blockCfg.wishlist} accentColor={accent} lang={lang} />}
           {hasBlock("-musicpro") && <MusicProSection accentColor={accent} eventId={event.id} lang={lang} isPreview={isDemo} />}
 
-          {event.rsvp_enabled && <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} />}
+          {event.rsvp_enabled && <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="wedding" lang={lang} maxCompanions={maxCompanions} accentColor={accent} />}
 
           {/* Footer – bold and minimal */}
           <footer className="py-16 md:py-32 relative" style={{ backgroundColor: bgDark }}>

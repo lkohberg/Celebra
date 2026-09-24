@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PartyPopper, MapPin, Clock, Music, Sparkles, Star } from "lucide-react";
 import { useTranslation } from "@/i18n";
+import { CalendarPlus } from "lucide-react";
+import { buildGoogleCalUrl, buildIcsBlob } from "./calendarUtils";
 import GiftBoxIntro from "./GiftBoxIntro";
 import CountdownTimer from "./CountdownTimer";
 import RsvpForm from "./RsvpForm";
@@ -192,7 +194,7 @@ const PremiumBirthdayPage = ({ event, theme, lang, showIntro = true, isDemo = fa
             {hasBlock("-musicwish") && <MusicWishSection accentColor={accent} eventId={event.id} lang={lang} isPreview={isDemo} />}
 
             {event.rsvp_enabled && (
-              <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="birthday" lang={lang} maxCompanions={maxCompanions} />
+              <RsvpForm eventId={event.id} rsvpDeadline={event.rsvp_deadline} menuSelection={event.menu_selection || false} variant="birthday" lang={lang} maxCompanions={maxCompanions} accentColor={accent} />
             )}
 
             {/* Footer */}
@@ -202,6 +204,10 @@ const PremiumBirthdayPage = ({ event, theme, lang, showIntro = true, isDemo = fa
                 <h2 className="font-display text-2xl md:text-3xl mb-1.5" style={{ color: accent }}>{event.title}</h2>
                 <PartyDivider color={accent} />
                 <p className="font-body text-xs md:text-sm text-muted-foreground tracking-[0.15em] uppercase mt-2">{formattedDate}</p>
+              <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
+                <a href={buildGoogleCalUrl(event.title, event.event_date, event.event_time, event.address || event.location_name || "")} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-body border border-border/50 text-foreground"><CalendarPlus className="w-4 h-4" style={{ color: accent }} /> Google Calendar</a>
+                <a href={buildIcsBlob(event.title, event.event_date, event.event_time, event.address || event.location_name || "")} download={`${event.title.replace(/\s/g, "_")}.ics`} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-body border border-border/50 text-foreground"><CalendarPlus className="w-4 h-4" style={{ color: accent }} /> Apple / Outlook</a>
+              </div>
               </div>
             </footer>
           </motion.div>
