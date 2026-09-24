@@ -788,20 +788,10 @@ Packages: **Party Fun €25** (timeline, music wish, games, quiz, music), **Part
 
 # 13. Known Gaps and Inconsistencies
 
-Mention these carefully (or avoid them) in public material.
-
 1. **RSVP deadline not enforced:** the form stays open after the deadline.
-2. **Renewal does not extend runtime:** the €10 payment is processed like a first purchase; no new end date is saved.
-3. **Renewal reminder email:** built, but no automatic schedule was found in the project.
-4. **Automatic deactivation after 180 days:** stated in the terms, not built; only a dashboard banner appears.
-5. **Reactivating an archived event** as a normal user may be rejected by the security rules.
-6. **Legacy configure page** with different prices is still reachable by direct address.
-7. **QR scan counter** is displayed but only page views are recorded.
-8. **Calendar buttons** exist only in the wedding designs.
-9. **Reply form color** follows the category, not the host's chosen color.
-10. **404 and unsubscribe pages** are single language (English / German).
-11. **Cookie banner** Accept and Decline have the same effect.
-12. **Hotels entered in the block configurator** may not show if the invitation reads hotels from a separate field (Unable to verify).
+2. **Legacy configure page** with different prices is still reachable by direct address.
+
+Fixed since the first version of this document: renewals now add 6 months, the reminder email is sent automatically 10 days before expiry, expired invitations are switched off automatically every morning, hosts can put an archived paid invitation back online, QR scans are counted, calendar buttons exist in every design, the reply form uses the host's color, the 404 and unsubscribe pages follow the website language, and the cookie notice has a single OK button because only necessary cookies are used.
 
 ---
 
