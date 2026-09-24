@@ -23,7 +23,7 @@ export interface Package {
 
 export const BASE_PRICE = 19;
 
-export const MANUAL_BLOCK_SUFFIXES = ["-illustration", "-musicpro"];
+export const MANUAL_BLOCK_SUFFIXES = ["-illustration"];
 
 export const isManualBlock = (blockId: string) =>
   MANUAL_BLOCK_SUFFIXES.some(suffix => blockId.endsWith(suffix));
@@ -43,7 +43,7 @@ export const blocks: Block[] = [
   { id: "wedding-slideshow", nameKey: "block.slideshow", descriptionKey: "block.desc.slideshow", price: 19, category: "wedding", icon: "📸" },
   { id: "wedding-menu", nameKey: "block.menu", descriptionKey: "block.desc.menu", price: 19, category: "wedding", icon: "🍽️" },
   { id: "wedding-shuttle", nameKey: "block.shuttle", descriptionKey: "block.desc.shuttle", price: 19, category: "wedding", icon: "🚌" },
-  { id: "wedding-musicpro", nameKey: "block.musicpro", descriptionKey: "block.desc.musicpro", price: 19, category: "wedding", icon: "🎵", requiresManualWork: true, manualWorkDescriptionKey: "block.manual.musicpro" },
+  { id: "wedding-musicpro", nameKey: "block.musicpro", descriptionKey: "block.desc.musicpro", price: 19, category: "wedding", icon: "🎵", },
   { id: "wedding-illustration", nameKey: "block.illustration", descriptionKey: "block.desc.illustration", price: 29, category: "wedding", icon: "🎨", requiresManualWork: true, manualWorkDescriptionKey: "block.manual.illustration" },
 
   // Corporate
