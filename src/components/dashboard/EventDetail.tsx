@@ -88,15 +88,14 @@ const EventDetail = ({ event, isAdmin, onDeleted }: { event: any; isAdmin?: bool
 
   // Uptime expiry notification (6 months = ~180 days, warn at 170 days = 5m20d)
   const uptimeWarning = useMemo(() => {
-    if (event.status !== "live") return null;
-    const created = new Date(event.created_at);
-    const now = new Date();
-    const daysSinceCreation = Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
-    const daysLeft = 180 - daysSinceCreation;
-    if (daysSinceCreation >= 170 && daysLeft > 0) return { type: "warning" as const, daysLeft };
+    if (event.status !== "live" && event.status !== "archived") return null;
+    const expiresAtRaw = (event as any).expires_at as string | null | undefined;
+    const end = expiresAtRaw ? new Date(expiresAtRaw) : new Date(new Date(event.created_at).getTime() + 180 * 86400000);
+    const daysLeft = Math.ceil((end.getTime() - Date.now()) / 86400000);
     if (daysLeft <= 0) return { type: "expired" as const, daysLeft: 0 };
+    if (event.status === "live" && daysLeft <= 10) return { type: "warning" as const, daysLeft };
     return null;
-  }, [event.status, event.created_at]);
+  }, [event.status, event.created_at, (event as any).expires_at]);
 
   // Quiz stats
   const blockCfg = (event.block_config || {}) as any;
@@ -236,7 +235,7 @@ const EventDetail = ({ event, isAdmin, onDeleted }: { event: any; isAdmin?: bool
           {(event.status === "live" || event.status === "archived") && (
             <div className="flex items-center gap-3 mb-4">
               <Button variant={event.status === "live" ? "outline" : "default"} size="sm" className="font-body" disabled={updateEvent.isPending}
-                onClick={() => updateEvent.mutate({ id: event.id, status: event.status === "live" ? "archived" : "live" })}>
+                onClick={() => updateEvent.mutate({ id: event.id, status: event.status === "live" ? "archived" : "live" }, { onError: () => toast.error(uptimeWarning?.type === "expired" ? t("uptime.expired") : t("dashboard.editError")) })}>
                 {event.status === "live" ? (<><Archive className="w-4 h-4 mr-2" />{t("dashboard.archive")}</>) : (<><Radio className="w-4 h-4 mr-2" />{t("dashboard.goLive")}</>)}
               </Button>
             </div>
@@ -501,7 +500,7 @@ const SingleQrCode = ({ eventLink }: { eventLink: string }) => {
   return (
     <div className="flex items-center gap-3">
       <div ref={qrRef} className="inline-block bg-card p-2 rounded-lg">
-        <QRCodeSVG value={url} size={80} bgColor="transparent" fgColor="hsl(220, 20%, 14%)" level="H" />
+        <QRCodeSVG value={`${url}?src=qr`} size={80} bgColor="transparent" fgColor="hsl(220, 20%, 14%)" level="H" />
       </div>
       <Button variant="ghost" size="sm" className="h-7 font-body text-xs" onClick={handleDownload}>
         <Download className="w-3 h-3 mr-1" /> QR

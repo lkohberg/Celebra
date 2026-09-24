@@ -75,9 +75,16 @@ const EventPage = () => {
   // Track page view
   useEffect(() => {
     if (event?.id) {
+      const params = new URLSearchParams(window.location.search);
+      const fromQr = params.get("src") === "qr";
+      if (fromQr) {
+        params.delete("src");
+        const qs = params.toString();
+        window.history.replaceState(null, "", window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash);
+      }
       trackAnalytics.mutate({
         event_id: event.id,
-        event_type: "page_view",
+        event_type: fromQr ? "qr_scan" : "page_view",
         referrer: document.referrer || undefined,
       });
     }
