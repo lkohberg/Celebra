@@ -1,134 +1,107 @@
+# Visual invitation builder overhaul
 
+## Goal
 
-# Visual Audit: Hochzeits-Templates — Was fehlt
+Replace the current form first customization flow with a direct visual builder. Customers will compose the real invitation page itself: add blocks from a library, edit content in place, drag every section into any order, and see the same responsive result that guests will later receive.
 
-## Befund nach Code-Analyse
+The overhaul will cover:
 
-Alle drei Wedding-Templates (Floral Romance, Classic Elegance, Modern Love) rendern exakt denselben `PremiumWeddingPage`-Code. Der einzige Unterschied: 3 Farbwerte und 1 Font. Das ist das Kernproblem.
+- New invitation creation in the current order flow
+- Editing an existing invitation from the customer dashboard
+- Wedding, birthday, and corporate templates
+- Desktop and mobile editing
+- Demo, builder preview, and live page consistency
 
----
+The legacy `/configure/:templateId` page remains untouched as previously requested; “both flows” means the active order flow and editing existing invitations.
 
-## 1. Drei Templates, ein Layout — null Differenzierung
+## Builder experience
 
-**Problem:** Ein User, der "Floral Romance" vs. "Modern Love" vergleicht, sieht dasselbe Layout mit anderen Farben. Das fühlt sich nicht nach Auswahl an, sondern nach Farbwechsel.
+### Direct editing canvas
 
-**Lösung:** Jedes Template bekommt eigene visuelle DNA:
+- Replace the separate block selection and configuration screens with one full height builder.
+- Render the chosen invitation template as the central canvas, using the same block components and responsive rules as the live page.
+- Make editable text, dates, places, choices, lists, images, and colors selectable directly where they appear.
+- Open a focused editing control beside the selected content on desktop and in a bottom sheet on mobile. Typing updates the canvas immediately without a second preview step.
+- Keep checkout details and the final purchase action separate from page composition so the canvas remains uncluttered.
 
-- **Floral Romance:** Botanische SVG-Ornamente als Section-Divider (Blätter, Ranken statt der generischen `FloralDivider`). Weiche, organische Formen. Hero-Text mit floraler Umrahmung.
-- **Classic Elegance:** Geometrische, symmetrische Ornamente. Doppelte Rahmenlinien. Serif-dominiertes Layout mit mehr Weissraum. Goldene Akzentlinien.
-- **Modern Love:** Keine Ornamente. Clean, asymmetrisches Layout. Sans-serif. Große, mutige Typografie. Minimale Dekoration, stattdessen starke Kontraste und negative Space.
+### Block library and arrangement
 
-**Impact:** Templates fühlen sich wie echte Produkte an, nicht wie Skins.
+- Show available but unused blocks in a searchable side library on desktop and a collapsible tray on mobile.
+- Let customers drag a block from the library into any visible insertion point on the invitation.
+- Let every placed section, including intro, event details, countdown, RSVP, calendar, and ending, be reordered.
+- Use clear drag handles so editing text never accidentally starts a drag.
+- On mobile, support hold and drag plus accessible move up and move down controls.
+- Allow blocks to be hidden or removed with an undo option. Required event data remains validated before checkout even when its visual section is moved or hidden.
+- Preserve pricing rules: adding a paid block updates the order total during creation. Existing invitations only expose already purchased blocks as usable; adding another paid block enters the existing add on payment flow rather than unlocking it for free.
 
----
+### Motion and feedback
 
-## 2. Countdown Timer — zu generisch
+- Add restrained lift, insertion gap, snap, and short gold highlight animations while dragging and when a block lands.
+- Animate newly added and removed blocks without shifting unrelated content abruptly.
+- Keep transitions template appropriate and disable nonessential motion when reduced motion is requested.
+- Prevent the intro animation from blocking or unmounting the builder canvas. In editing mode it becomes a replayable preview instead of interrupting work.
+- Audit unfinished or awkward transitions across the final creation and editing journey, including loading, empty, saving, validation, checkout handoff, and returning to the dashboard.
 
-**Problem:** Nackte Zahlen ohne visuellen Container. Kein Unterschied zu einem Countdown auf irgendeiner Website.
+## Design safeguards
 
-**Lösung:**
-- Zahlen in elegante Cards mit `backdrop-blur`, Border und einem subtilen Schatten setzen
-- Trennzeichen zwischen den Einheiten (z.B. ":" oder dekorative Punkte)
-- Template-spezifische Variante: Floral bekommt einen sanften Rahmen mit Blatt-Ecken, Classic bekommt einen goldenen Doppelrahmen, Modern bekommt ein cleanes Pill-Design
+- Create shared section spacing and transition rules so any neighboring block combination remains intentional on mobile and desktop.
+- Give each block declared layout needs such as full width, media ratio, minimum content, and safe background transition behavior.
+- Automatically reconcile adjacent backgrounds, dividers, and vertical spacing instead of relying on each template’s current hardcoded margins.
+- Show valid drop locations only and reserve their dimensions during dragging to prevent jumps.
+- Keep controls outside the final invitation rendering layer, so editor chrome can never leak into demos or live pages.
+- Validate text lengths, empty states, image crops, and mobile wrapping within each block rather than allowing broken layouts.
 
-**Impact:** Der Countdown wird zum Blickfang statt zu nackter Information.
+## Shared rendering architecture
 
----
+- Introduce one canonical invitation model and an ordered page layout containing stable block instance IDs and block types.
+- Separate purchased block entitlements from visual order. The existing `selected_blocks` list continues to describe paid options; the new ordered layout describes every rendered section.
+- Build a central block registry containing each block’s renderer, editor, defaults, validation, pricing relationship, and layout safeguards.
+- Extract currently inline core sections into registered blocks so they can move exactly like optional sections.
+- Replace the hardcoded section order in all five premium template pages with one ordered renderer.
+- Replace duplicated template selection and preview event conversion logic with shared resolvers and adapters.
+- Use the same renderer for demos, the builder canvas, dashboard editing, and public event pages, while supplying the appropriate mode and permissions.
 
-## 3. RSVP-Formular — Kontaktformular-Ästhetik
+## Saving and compatibility
 
-**Problem:** Placeholder-only Inputs, keine Labels, kein visueller Container, kein emotionaler Bezug. Die Attendance-Buttons sind generische Kästen. Kein Feedback nach dem Absenden ausser einem Toast.
+- Add an authenticated, owner only draft record for builder state so unfinished work survives refreshes and device changes.
+- Before sign in, autosave safely in the browser; merge that draft into the customer’s private draft after authentication.
+- Debounce content changes, save ordering immediately after a completed move, and show clear Saving, Saved, Offline, and Retry states.
+- Use revision checks so a slow save cannot overwrite a newer edit.
+- Existing live invitations receive a deterministic fallback layout matching their current visual order. Their first edit saves that order into the new model without changing what guests see.
+- Keep the public event view read only and preserve the existing privacy boundary: drafts are never publicly readable.
 
-**Lösung:**
-- Floating Labels statt nur Placeholder
-- Attendance-Auswahl als stilvolle Icon-Buttons mit Animationen (Herz für "Ja", sanftes X für "Nein")
-- Das gesamte Form in eine elegante Card mit leichtem Schatten und Border einbetten
-- Nach Submit: Inline-Erfolgsanzeige mit Animation (z.B. Herz-Konfetti oder eleganter Checkmark) statt nur Toast
-- Visuell zum Template passend stylen (Ornamente, Farben)
+## Editing workflow for existing invitations
 
-**Impact:** RSVP wird zu einem emotionalen Moment statt zu einer Pflichtübung.
+- Replace the current long edit dialog with the same visual builder, preloaded with the live invitation.
+- Keep lifecycle, renewal, guest management, analytics, and administrative actions in the dashboard rather than crowding the builder.
+- Provide undo and redo for content, visibility, and ordering changes during the session.
+- Autosave edits as a private working revision and provide a clear Apply changes action for the live invitation, preventing half finished edits from appearing to guests.
+- Show a concise summary when unpublished changes exist and allow the customer to discard them.
 
----
+## Validation
 
-## 4. Section-Übergänge — harter Farbwechsel
+- Add unit tests for ordered layout normalization, legacy fallback order, block insertion, movement, removal, entitlements, undo and redo, and revision conflict handling.
+- Add interaction tests for desktop drag and drop, keyboard movement, mobile move controls, inline editing, autosave recovery, and failed save retry.
+- Verify creation through checkout handoff and editing through Apply changes while authenticated.
+- Compare demo, builder, and public rendering for every template and representative block combination.
+- Check phone, tablet, and desktop widths, long German and English content, reduced motion, keyboard navigation, and touch dragging.
+- Update both English and German product documentation to describe the finished builder and its saving behavior.
 
-**Problem:** Jede Section hat einen anderen `backgroundColor`, aber die Übergänge sind harte Kanten. Das wirkt abgehackt.
+## Technical details
 
-**Lösung:**
-- SVG Wave-Divider oder sanfte Kurven-Shapes zwischen Sections einfügen
-- Template-spezifisch: Floral = organische Wellen, Classic = elegante Doppellinie, Modern = diagonaler Schnitt
-- CSS `background: linear-gradient(...)` an den Übergangsstellen nutzen
+- Use `@dnd-kit` for sortable lists, cross container dragging, pointer, touch, and keyboard sensors rather than custom drag physics.
+- Add an authenticated `event_drafts` table with explicit grants and row level policies, plus a version field for conflict safe autosaving.
+- Add an ordered JSON layout to events or an equivalent dedicated structure while retaining `selected_blocks` for pricing and compatibility.
+- Keep existing `block_config` content readable through an adapter; migrate lazily or backfill deterministic layouts without destructively rewriting customer content.
+- Build editor overlays around registered blocks rather than embedding editor state inside public block components.
+- Record the new canonical renderer and draft architecture in `AGENTS.md` during implementation.
 
-**Impact:** Die Seite fliesst wie ein zusammenhängendes Erlebnis statt einzelner Blöcke.
+## Delivery order
 
----
-
-## 5. Timeline — Desktop-Layout auf Mobile
-
-**Problem:** Die alternierende Links/Rechts-Timeline (`isLeft = i % 2 === 0`) ist auf Mobile problematisch — Text wechselt die Seite, der Lesefluss wird unterbrochen. Die Zeitangabe steht unter dem Label statt prominent daneben.
-
-**Lösung:**
-- Auf Mobile: Einheitlich linksbündige Timeline (Linie links, Content rechts)
-- Zeitangabe in einer eigenen kleinen Card/Badge prominent darstellen
-- Desktop: Alternierend beibehalten, aber mit Cards statt nacktem Text
-
-**Impact:** Timeline wird auf allen Geräten intuitiv lesbar.
-
----
-
-## 6. Footer — verpasste Chance
-
-**Problem:** Nur Name + Datum. Kein emotionaler Abschluss, kein "Add to Calendar", kein Call-to-Action.
-
-**Lösung:**
-- Emotionaler Closing-Text (z.B. "Wir freuen uns auf euch" — konfigurierbar)
-- "Add to Calendar"-Buttons (Google Calendar, Apple Calendar, .ics Download)
-- Dezentes celebra.at Branding mit "Made with ♥"
-
-**Impact:** Der User verlässt die Seite mit einem guten Gefühl und hat den Termin im Kalender.
-
----
-
-## 7. Details-Karten (Zeremonie/Empfang) — identische Karten
-
-**Problem:** Beide Karten sehen exakt gleich aus (gleiche Icons, gleiche Farbe, gleicher Stil). Es gibt keinen visuellen Unterschied zwischen Zeremonie und Empfang.
-
-**Lösung:**
-- Unterschiedliche Icons (z.B. Kirche/Kapelle für Zeremonie, Champagnerglas für Empfang)
-- Uhrzeitangabe prominent einbauen
-- Optional: kleines Foto/Illustration des Ortes
-
-**Impact:** Information wird sofort unterscheidbar und visuell reicher.
-
----
-
-## 8. Slideshow — kein Touch-Support, kein Lightbox
-
-**Problem:** Nur Auto-Play mit Dot-Navigation. Kein Swipe auf Mobile. Kein Fullscreen/Lightbox bei Tap. Keine Bildunterschriften.
-
-**Lösung:**
-- Touch-Swipe-Gesten via framer-motion `drag="x"` oder ein leichtgewichtiges Carousel
-- Tap auf ein Bild öffnet es im Fullscreen-Overlay mit Pinch-to-Zoom
-- Optional: Bildunterschriften unter jedem Foto
-
-**Impact:** Gäste interagieren mit den Fotos statt sie nur passiv zu sehen.
-
----
-
-## Empfohlene Umsetzungsreihenfolge
-
-| Prio | Feature | Aufwand |
-|------|---------|---------|
-| 1 | Section-Divider (SVG Waves) | Klein |
-| 2 | Countdown Timer Redesign (Cards + Separatoren) | Klein |
-| 3 | Template-spezifische Ornamente/Divider | Mittel |
-| 4 | RSVP-Formular Redesign | Mittel |
-| 5 | Timeline Mobile-Layout Fix | Klein |
-| 6 | Footer mit Add-to-Calendar | Klein |
-| 7 | Slideshow Swipe + Lightbox | Mittel |
-| 8 | Detail-Karten Differenzierung | Klein |
-
----
-
-Sag mir welche Punkte ich umsetzen soll — einzeln oder alle auf einmal.
-
+1. Canonical block schema, registry, legacy adapter, storage changes, and tests
+2. Shared ordered renderer across all template and preview paths
+3. Desktop builder with direct editing, library, drag and drop, and autosave
+4. Mobile builder with hold and drag, move controls, and bottom sheet editing
+5. Existing invitation revision and Apply changes workflow
+6. Animation, spacing, responsive, accessibility, and end to end polish audit
+7. Documentation and final cross template verification
