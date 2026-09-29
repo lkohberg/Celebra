@@ -9,12 +9,9 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
-  Section,
   Text,
-  Hr,
 } from 'npm:@react-email/components@0.0.22'
 
 interface InviteEmailProps {
@@ -28,34 +25,28 @@ export const InviteEmail = ({
   siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
-  <Html lang="de" dir="ltr">
-    <Head />
-    <Preview>Du wurdest zu Celebra eingeladen</Preview>
+  <Html lang="en" dir="ltr">
+    <Head>
+      <style>{darkModeCss}</style>
+    </Head>
+    <Preview>You've been invited to join {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Section style={logoSection}>
-          <Img src="https://nycaurobmnnrskwlzgym.supabase.co/storage/v1/object/public/email-assets/celebra-logo.png" width="80" height="80" alt="Celebra" style={logoImg} />
-        </Section>
-        <Hr style={divider} />
-        <Heading style={h1}>Du bist eingeladen!</Heading>
+        <Heading style={h1}>You've been invited</Heading>
         <Text style={text}>
-          Du wurdest eingeladen,{' '}
+          You've been invited to join{' '}
           <Link href={siteUrl} style={link}>
-            <strong>Celebra</strong>
-          </Link>{' '}
-          beizutreten. Klicke auf den Button, um die Einladung anzunehmen.
+            <strong>{siteName}</strong>
+          </Link>
+          . Click the button below to accept the invitation and create your
+          account.
         </Text>
-        <Section style={buttonSection}>
-          <Button style={button} href={confirmationUrl}>
-            Einladung annehmen
-          </Button>
-        </Section>
+        <Button className="dm-btn" style={button} href={confirmationUrl}>
+          Accept Invitation
+        </Button>
         <Text style={footer}>
-          Falls du diese Einladung nicht erwartet hast, kannst du diese E-Mail ignorieren.
-        </Text>
-        <Hr style={divider} />
-        <Text style={brand}>
-          <Link href="https://celebra.at" style={brandLink}>celebra.at</Link> · Deine digitale Event-Einladung
+          If you weren't expecting this invitation, you can safely ignore this
+          email.
         </Text>
       </Container>
     </Body>
@@ -64,35 +55,36 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'DM Sans', Arial, sans-serif" }
-const container = { padding: '40px 30px', maxWidth: '480px', margin: '0 auto' }
-const logoSection = { textAlign: 'center' as const, marginBottom: '8px' }
-const logoImg = { margin: '0 auto', borderRadius: '50%' }
-const divider = { borderColor: '#e8e0d4', margin: '20px 0' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const container = { padding: '20px 25px' }
 const h1 = {
-  fontFamily: "'Playfair Display', Georgia, serif",
-  fontSize: '24px',
+  fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#1f2937',
-  margin: '0 0 16px',
+  color: '#000000',
+  margin: '0 0 20px',
 }
 const text = {
-  fontSize: '15px',
-  color: '#6b7280',
-  lineHeight: '1.6',
-  margin: '0 0 24px',
+  fontSize: '14px',
+  color: '#55575d',
+  lineHeight: '1.5',
+  margin: '0 0 25px',
 }
-const link = { color: '#c8922a', textDecoration: 'underline' }
-const buttonSection = { textAlign: 'center' as const, margin: '0 0 24px' }
+const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#c8922a',
-  color: '#faf7f2',
-  fontSize: '15px',
-  fontWeight: '600' as const,
-  borderRadius: '12px',
-  padding: '14px 28px',
+  backgroundColor: '#000000',
+  color: '#ffffff',
+  fontSize: '14px',
+  border: '1px solid #000000',
+  borderRadius: '8px',
+  padding: '12px 20px',
   textDecoration: 'none',
 }
-const footer = { fontSize: '13px', color: '#9ca3af', margin: '0 0 0' }
-const brand = { fontSize: '12px', color: '#9ca3af', textAlign: 'center' as const, margin: '0' }
-const brandLink = { color: '#c8922a', textDecoration: 'none' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+// Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.
+const darkModeCss = `
+  @media (prefers-color-scheme: dark) {
+    .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  }
+  [data-ogsc] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+  [data-ogsb] .dm-btn { background-color: #ffffff !important; color: #000000 !important; }
+`
