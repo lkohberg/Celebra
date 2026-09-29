@@ -26,13 +26,14 @@ The legacy `/configure/:templateId` page remains untouched as previously request
 
 ### Block library and arrangement
 
-- Show available but unused blocks in a searchable side library on desktop and a collapsible tray on mobile.
+- Keep block and package selection before the builder. The builder receives only the blocks the customer selected and is planning to purchase.
+- Show only selected but currently unused blocks in the side library on desktop and the collapsible tray on mobile. Never expose unselected or unpurchased premium blocks inside the builder.
 - Let customers drag a block from the library into any visible insertion point on the invitation.
 - Let every placed section, including intro, event details, countdown, RSVP, calendar, and ending, be reordered.
 - Use clear drag handles so editing text never accidentally starts a drag.
 - On mobile, support hold and drag plus accessible move up and move down controls.
 - Allow blocks to be hidden or removed with an undo option. Required event data remains validated before checkout even when its visual section is moved or hidden.
-- Preserve pricing rules: adding a paid block updates the order total during creation. Existing invitations only expose already purchased blocks as usable; adding another paid block enters the existing add on payment flow rather than unlocking it for free.
+- Preserve pricing rules: the builder cannot add products or change entitlements. During creation it is limited to the current planned purchase; existing invitations are limited to blocks already purchased. Additional blocks must first be selected through the relevant purchase flow and become available only after that entitlement is confirmed.
 
 ### Motion and feedback
 
@@ -54,7 +55,8 @@ The legacy `/configure/:templateId` page remains untouched as previously request
 ## Shared rendering architecture
 
 - Introduce one canonical invitation model and an ordered page layout containing stable block instance IDs and block types.
-- Separate purchased block entitlements from visual order. The existing `selected_blocks` list continues to describe paid options; the new ordered layout describes every rendered section.
+- Separate purchased block entitlements from visual order. The existing `selected_blocks` list remains the authority for which optional blocks may be used; the new ordered layout can only reference core sections and entitled block IDs.
+- Validate entitlements both when loading and saving a layout so manually altered browser data cannot unlock a block.
 - Build a central block registry containing each block’s renderer, editor, defaults, validation, pricing relationship, and layout safeguards.
 - Extract currently inline core sections into registered blocks so they can move exactly like optional sections.
 - Replace the hardcoded section order in all five premium template pages with one ordered renderer.
