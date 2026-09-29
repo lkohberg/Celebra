@@ -49,15 +49,19 @@ Deno.serve(async (req) => {
     const email = userData?.user?.email;
     if (!email) continue;
     const daysLeft = Math.max(1, Math.round((new Date(event.expires_at).getTime() - now.getTime()) / DAY));
-    await supabase.functions.invoke("send-transactional-email", {
-      body: {
-        templateName: "renewal-reminder",
-        recipientEmail: email,
+    try {
+      const result = await sendAndLog(supabase, "renewal-reminder", email, {
         idempotencyKey: `renewal-${event.id}-${String(event.expires_at).slice(0, 10)}`,
         templateData: { eventTitle: event.title, daysLeft },
-      },
-    });
-    sent++;
+      });
+      if (result.sent) sent++;
+    } catch (err) {
+      const e = err as { status?: number; retryAfterSeconds?: number | null };
+      if (e?.status === 429) {
+        await new Promise((r) => setTimeout(r, (e.retryAfterSeconds ?? 60) * 1000));
+      }
+      console.error("Renewal reminder failed", { event_id: event.id });
+    }
   }
 
   return new Response(JSON.stringify({ sent, deactivated: expired?.length || 0 }), {
